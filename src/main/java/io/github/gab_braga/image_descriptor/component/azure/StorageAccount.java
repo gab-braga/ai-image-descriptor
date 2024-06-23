@@ -7,74 +7,80 @@ import org.springframework.stereotype.Component;
 @Component
 public class StorageAccount {
 
-    @Value("azure-account-name")
+    @Value("${azure-account-name}")
     private String azureAccountName;
-    @Value("azure-account-key")
+    @Value("${azure-account-key}")
     private String azureAccountKey;
 
-    public final String connectStr =
-            "DefaultEndpointsProtocol=https;" +
-                    String.format("AccountName=%s;", azureAccountName) +
-                    String.format("AccountKey=%s", azureAccountKey);
+    private final int MAX_SIZE_UPLOAD_FILE = 1024;
 
-    private ShareClient createShareClientConnection
-            (String connectStr, String shareName) throws Exception {
+    private String createStringConnection() {
+    return String.format(
+        "DefaultEndpointsProtocol=https;AccountName=%s;AccountKey=%s;EndpointSuffix=core.windows.net",
+        azureAccountName,
+        azureAccountKey);
+    }
+
+    private ShareClient createShareClient
+            (String shareName) throws Exception {
         return new ShareClientBuilder()
-                .connectionString(connectStr)
+                .connectionString(this.createStringConnection())
                 .shareName(shareName)
                 .buildClient();
     }
 
-    private ShareDirectoryClient createShareDirectoryClientConnection
-            (String connectStr, String shareName, String dirName) throws Exception {
+    private ShareDirectoryClient createShareDirectoryClient
+            (String shareName, String dirName) throws Exception {
         return new ShareFileClientBuilder()
-                .connectionString(connectStr)
+                .connectionString(this.createStringConnection())
                 .shareName(shareName)
                 .resourcePath(dirName)
                 .buildDirectoryClient();
     }
 
-    public void createFileShare(String connectStr, String shareName) throws Exception {
-        ShareClient shareClient = createShareClientConnection(connectStr, shareName);
-        shareClient.create();
+    public void createFileShare(String shareName) throws Exception {
+        ShareClient shareClient = createShareClient(shareName);
+        shareClient.createIfNotExists();
     }
 
-    public void deleteFileShare(String connectStr, String shareName) throws Exception {
-        ShareClient shareClient = createShareClientConnection(connectStr, shareName);
-        shareClient.delete();
+    public void deleteFileShare(String shareName) throws Exception {
+        ShareClient shareClient = createShareClient(shareName);
+        shareClient.deleteIfExists();
     }
 
-    public void createDirectory(String connectStr, String shareName, String dirName) throws Exception {
+    public void createDirectory(String shareName, String dirName) throws Exception {
         ShareDirectoryClient shareDirectoryClient =
-                createShareDirectoryClientConnection(connectStr, shareName, dirName);
-        shareDirectoryClient.create();
+                createShareDirectoryClient(shareName, dirName);
+        shareDirectoryClient.createIfNotExists();
     }
 
-    public void deleteDirectory(String connectStr, String shareName, String dirName) throws Exception {
+    public void deleteDirectory(String shareName, String dirName) throws Exception {
         ShareDirectoryClient shareDirectoryClient =
-                createShareDirectoryClientConnection(connectStr, shareName, dirName);
-        shareDirectoryClient.delete();
+                createShareDirectoryClient(shareName, dirName);
+        shareDirectoryClient.deleteIfExists();
     }
 
-    public void uploadFile(String connectStr, String shareName, String dirName, String fileName) throws Exception {
-        ShareDirectoryClient shareDirectoryClient =
-                createShareDirectoryClientConnection(connectStr, shareName, dirName);
-        ShareFileClient fileClient = shareDirectoryClient.getFileClient(fileName);
-        fileClient.create(1024);
+    public void uploadFile(String shareName, String dirName, String fileName) throws Exception {
+        ShareDirectoryClient dirClient = new ShareFileClientBuilder()
+                .connectionString(createStringConnection()).shareName(shareName)
+                .resourcePath(dirName)
+                .buildDirectoryClient();
+        ShareFileClient fileClient = dirClient.getFileClient(fileName);
+        fileClient.create(MAX_SIZE_UPLOAD_FILE);
         fileClient.uploadFromFile(fileName);
     }
 
-    public void downloadFile(String connectStr, String shareName, String dirName, String fileName) throws Exception {
+    public void downloadFile(String shareName, String dirName, String fileName) throws Exception {
         ShareDirectoryClient shareDirectoryClient =
-                createShareDirectoryClientConnection(connectStr, shareName, dirName);
+                createShareDirectoryClient(shareName, dirName);
         ShareFileClient fileClient = shareDirectoryClient.getFileClient(fileName);
         fileClient.downloadToFile(fileName);
     }
 
-    public void deleteFile(String connectStr, String shareName, String dirName, String fileName) throws Exception {
+    public void deleteFile(String shareName, String dirName, String fileName) throws Exception {
         ShareDirectoryClient shareDirectoryClient =
-                createShareDirectoryClientConnection(connectStr, shareName, dirName);
+                createShareDirectoryClient(shareName, dirName);
         ShareFileClient fileClient = shareDirectoryClient.getFileClient(fileName);
-        fileClient.delete();
+        fileClient.deleteIfExists();
     }
 }
