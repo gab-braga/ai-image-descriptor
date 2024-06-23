@@ -9,5 +9,4 @@ public class AiImageDescriptorApplication {
 	public static void main(String[] args) {
 		SpringApplication.run(AiImageDescriptorApplication.class, args);
 	}
-
 }

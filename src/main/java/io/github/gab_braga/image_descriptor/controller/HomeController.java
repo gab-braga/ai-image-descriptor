@@ -26,7 +26,8 @@ public class HomeController {
     try {
       storage.createFileShare("files");
       storage.createDirectory("files", "images");
-      storage.uploadFile("files", "images", "");
+      storage.uploadFile("files", "images", "tigres.jpg");
+      storage.downloadFile("files", "images", "pandas.jpg");
     }
     catch(Exception e) {
       e.printStackTrace();

@@ -12,7 +12,7 @@ public class StorageAccount {
     @Value("${azure-account-key}")
     private String azureAccountKey;
 
-    private final int MAX_SIZE_UPLOAD_FILE = 1024;
+    private final int MAX_SIZE_FILE_IN_BYTES = 2000000;
 
     private String createStringConnection() {
     return String.format(
@@ -66,15 +66,17 @@ public class StorageAccount {
                 .resourcePath(dirName)
                 .buildDirectoryClient();
         ShareFileClient fileClient = dirClient.getFileClient(fileName);
-        fileClient.create(MAX_SIZE_UPLOAD_FILE);
-        fileClient.uploadFromFile(fileName);
+        fileClient.create(MAX_SIZE_FILE_IN_BYTES);
+        String pathFile = String.format("data/%s", fileName);
+        fileClient.uploadFromFile(pathFile);
     }
 
     public void downloadFile(String shareName, String dirName, String fileName) throws Exception {
         ShareDirectoryClient shareDirectoryClient =
                 createShareDirectoryClient(shareName, dirName);
         ShareFileClient fileClient = shareDirectoryClient.getFileClient(fileName);
-        fileClient.downloadToFile(fileName);
+        String pathFile = String.format("downloads/%s", fileName);
+        fileClient.downloadToFile(pathFile);
     }
 
     public void deleteFile(String shareName, String dirName, String fileName) throws Exception {
