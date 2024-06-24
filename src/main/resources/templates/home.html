@@ -45,17 +45,16 @@
 
     function submitForm() {
       updateView();
-      setTimeout(2000, () => { })
       sendData();
     }
 
     function updateView() {
       const uploadImage = document.querySelector("#upload-image");
       const analyzingImage = document.querySelector("#analyzing-image");
-      uploadImage.classList.remove("d-inline-block")
-      uploadImage.classList.add("d-none")
-      analyzingImage.classList.remove("d-none")
-      analyzingImage.classList.add("d-inline-block")
+      uploadImage.classList.remove("d-inline-block");
+      uploadImage.classList.add("d-none");
+      analyzingImage.classList.remove("d-none");
+      analyzingImage.classList.add("d-inline-block");
     }
 
     function sendData() {

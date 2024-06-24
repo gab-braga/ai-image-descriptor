@@ -67,7 +67,7 @@ public class StorageAccount {
                 .buildDirectoryClient();
         ShareFileClient fileClient = dirClient.getFileClient(fileName);
         fileClient.create(MAX_SIZE_FILE_IN_BYTES);
-        String pathFile = String.format("data/%s", fileName);
+        String pathFile = String.format("uploads/%s", fileName);
         fileClient.uploadFromFile(pathFile);
     }
 
