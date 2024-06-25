@@ -10,7 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
-import io.github.gab_braga.image_descriptor.component.StorageAzureComponent;
+import io.github.gab_braga.image_descriptor.component.ShareStorageAzureComponent;
 
 @Service
 public class AppService {
@@ -19,7 +19,7 @@ public class AppService {
   private final String DIRECTORY_NAME = "images";
   
   @Autowired
-  private StorageAzureComponent storageAzure;
+  private ShareStorageAzureComponent shareStorageAzure;
 
   public String uploadImage(MultipartFile file) throws Exception {
     String fileName = this.saveFile(file);
@@ -47,9 +47,9 @@ public class AppService {
   }
 
   private String uploadFile(String fileName) throws Exception {
-    this.storageAzure.createFileShare(SHARE_NAME);
-    this.storageAzure.createDirectory(SHARE_NAME, DIRECTORY_NAME);
-    this.storageAzure.uploadFile(SHARE_NAME, DIRECTORY_NAME, fileName);
+    this.shareStorageAzure.createFileShare(SHARE_NAME);
+    this.shareStorageAzure.createDirectory(SHARE_NAME, DIRECTORY_NAME);
+    this.shareStorageAzure.uploadFile(SHARE_NAME, DIRECTORY_NAME, fileName);
     return "";
   }
 }
