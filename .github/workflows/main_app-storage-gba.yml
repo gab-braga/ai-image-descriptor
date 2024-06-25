@@ -21,9 +21,6 @@ jobs:
         with:
           java-version: '21'
 
-      - name: Create uploads directory
-        run: mkdir uploads
-
       - name: Build with Maven
         run: mvn clean install -Dmaven.test.skip=true
 
