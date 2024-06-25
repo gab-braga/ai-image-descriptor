@@ -3,6 +3,8 @@ package io.github.gab_braga.image_cloud.component;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
+import com.azure.storage.blob.BlobContainerClient;
+import com.azure.storage.blob.BlobContainerClientBuilder;
 import com.azure.storage.file.share.ShareClient;
 import com.azure.storage.file.share.ShareClientBuilder;
 import com.azure.storage.file.share.ShareDirectoryClient;
@@ -29,6 +31,13 @@ public class StorageAccount {
                 .shareName(shareName)
                 .resourcePath(dirName)
                 .buildDirectoryClient();
+    }
+
+    public BlobContainerClient createBlobContainerClient(String containerName) throws Exception {
+        return new BlobContainerClientBuilder()
+                .connectionString(this.createStringConnection())
+                .containerName(containerName)
+                .buildClient();
     }
 
     private String createStringConnection() {

@@ -27,9 +27,7 @@ public class AppController {
   @PostMapping
   public String submit(RedirectAttributes attributes, @RequestParam("image") MultipartFile file) {
     try {
-      String url = this.service.uploadImage(file);
-      attributes.addAttribute("url", url);
-      attributes.addAttribute("caption", "");
+      this.service.uploadFileWithBlobStorage(file);
       return "redirect:/captions";
     } catch(Exception e) {
       System.err.println(e.getMessage());

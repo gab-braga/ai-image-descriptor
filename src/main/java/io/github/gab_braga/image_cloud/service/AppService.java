@@ -10,20 +10,33 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import io.github.gab_braga.image_cloud.component.BlobStorageAzureComponent;
 import io.github.gab_braga.image_cloud.component.ShareStorageAzureComponent;
 
 @Service
 public class AppService {
 
+  private final String CONTAINER_NAME = "files";
   private final String SHARE_NAME = "files";
-  private final String DIRECTORY_NAME = "images";
+  private final String SHARE_DIRECTORY_NAME = "images";
   
   @Autowired
   private ShareStorageAzureComponent shareStorageAzure;
 
-  public String uploadImage(MultipartFile file) throws Exception {
+  @Autowired
+  private BlobStorageAzureComponent blobStorageAzure;
+
+  public void uploadFileWithBlobStorage(MultipartFile file) throws Exception {
     String fileName = this.saveFile(file);
-    return this.uploadFile(fileName);
+    this.blobStorageAzure.createBlobContainer(CONTAINER_NAME);
+    this.blobStorageAzure.uploadFile(CONTAINER_NAME, fileName);
+  }
+
+  public void uploadFileWithShareStorage(MultipartFile file) throws Exception {
+    String fileName = this.saveFile(file);
+    this.shareStorageAzure.createFileShare(SHARE_NAME);
+    this.shareStorageAzure.createDirectory(SHARE_NAME, SHARE_DIRECTORY_NAME);
+    this.shareStorageAzure.uploadFile(SHARE_NAME, SHARE_DIRECTORY_NAME, fileName);
   }
 
   private String saveFile(MultipartFile file) throws IOException {
@@ -44,12 +57,5 @@ public class AppService {
 
   private String uuid() {
     return UUID.randomUUID().toString();
-  }
-
-  private String uploadFile(String fileName) throws Exception {
-    this.shareStorageAzure.createFileShare(SHARE_NAME);
-    this.shareStorageAzure.createDirectory(SHARE_NAME, DIRECTORY_NAME);
-    this.shareStorageAzure.uploadFile(SHARE_NAME, DIRECTORY_NAME, fileName);
-    return "";
   }
 }
