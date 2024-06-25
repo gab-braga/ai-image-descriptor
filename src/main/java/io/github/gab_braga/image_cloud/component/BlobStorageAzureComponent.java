@@ -17,10 +17,11 @@ public class BlobStorageAzureComponent {
         blobContainerClient.createIfNotExists();
     }
 
-    public void uploadFile(String containerName, String fileName) throws Exception {
+    public String uploadFile(String containerName, String fileName) throws Exception {
         BlobContainerClient blobContainer = this.account.createBlobContainerClient(containerName);
         BlobClient blobClient = blobContainer.getBlobClient(fileName);
         String pathFile = String.format("uploads/%s", fileName);
         blobClient.uploadFromFile(pathFile);
+        return blobClient.getBlobUrl();
     }
 }

@@ -27,16 +27,18 @@ public class AppController {
   @PostMapping
   public String submit(RedirectAttributes attributes, @RequestParam("image") MultipartFile file) {
     try {
-      this.service.uploadFileWithBlobStorage(file);
-      return "redirect:/captions";
+      String url = this.service.uploadFileWithBlobStorage(file);
+      attributes.addFlashAttribute("url", url);
+      return "redirect:/success";
     } catch(Exception e) {
       System.err.println(e.getMessage());
+      attributes.addFlashAttribute("message", "ERRO");
       return "redirect:/";
     }
   }
   
-  @GetMapping("/captions")
+  @GetMapping("/success")
   public ModelAndView captions() {
-    return new ModelAndView("captions");
+    return new ModelAndView("success");
   }
 }

@@ -26,10 +26,10 @@ public class AppService {
   @Autowired
   private BlobStorageAzureComponent blobStorageAzure;
 
-  public void uploadFileWithBlobStorage(MultipartFile file) throws Exception {
+  public String uploadFileWithBlobStorage(MultipartFile file) throws Exception {
     String fileName = this.saveFile(file);
     this.blobStorageAzure.createBlobContainer(CONTAINER_NAME);
-    this.blobStorageAzure.uploadFile(CONTAINER_NAME, fileName);
+    return this.blobStorageAzure.uploadFile(CONTAINER_NAME, fileName);
   }
 
   public void uploadFileWithShareStorage(MultipartFile file) throws Exception {

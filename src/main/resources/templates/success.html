@@ -13,8 +13,11 @@
 
 <body>
 
-  <main class="w-100 min-vh-100 d-flex align-items-center justify-content-center">
-    <h1>UPLOAD SUCCESS!</h1>
+  <main class="w-100 min-vh-100 d-flex flex-column align-items-center justify-content-center">
+    <h2 class="text-success">Upload success!</h2>
+    <div class="card" style="width: clamp(300px, 80%, 550px);">
+      <img th:src="${url}" alt="Image uploaded" class="w-100">
+    </div>
   </main>
 
 </body>

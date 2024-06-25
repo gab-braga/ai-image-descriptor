@@ -13,24 +13,31 @@
 
 <body>
 
-  <main class="w-100 min-vh-100 d-flex align-items-center justify-content-center">
+  <main class="w-100 min-vh-100 d-flex flex-column align-items-center justify-content-center">
     <form action="/" method="post" id="form-image-cloud" class="position-absolute visually-hidden" enctype="multipart/form-data">
       <input type="file" accept="image/*" id="field-image" name="image">
     </form>
-    <label for="field-image" id="upload-image" class="d-inline-block card px-5 py-4" style="width: clamp(300px, 80%, 550px); cursor: pointer;">
-      <div class="d-flex flex-column align-items-center justify-content-center">
-        <img src="/assets/cloud-up.svg" alt="upload image">
-        <span class="d-inline-block text-center text-secondary fs-2" style="max-width: 14ch;">
-          Drag and drop your image here
-        </span>
-      </div>
-    </label>
 
-    <div id="analyzing-image" class="d-none px-5 py-4" style="width: clamp(300px, 80%, 550px);">
+    <div id="upload-container" style="width: clamp(300px, 80%, 550px);">
+      <label for="field-image" class="w-100 d-inline-block card px-5 py-4" style="cursor: pointer;">
+        <div class="d-flex flex-column align-items-center justify-content-center">
+          <img src="/assets/cloud-up.svg" alt="upload image">
+          <span class="d-inline-block text-center text-secondary fs-2" style="max-width: 14ch;">
+            Drag and drop your image here
+          </span>
+        </div>
+      </label>
+
+      <button disabled type="submit" form="form-image-cloud" id="btn-send" class="w-100 btn btn-primary mt-4" style="cursor: pointer;">
+        Send image
+      </button>
+    </div>
+
+    <div id="progress-upload" class="d-none px-5 py-4" style="width: clamp(300px, 80%, 550px);">
       <div class="d-flex flex-column align-items-center justify-content-center">
         <img src="/assets/image.svg" alt="image">
         <span class="d-inline-block text-center text-secondary fs-2" style="max-width: 14ch;">
-          Analyzing image
+          Upload image
         </span>
         <div class="progress mt-3" role="progressbar" aria-label="Analyzing image" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100" style="width: 15rem;">
           <div class="progress-bar progress-bar-striped progress-bar-animated bg-secondary" style="width: 100%"></div>
@@ -41,27 +48,23 @@
 
   <script>
     const fieldImage = document.querySelector("#field-image");
-    fieldImage.addEventListener("change", submitForm);
+    const formImage = document.querySelector("#form-image-cloud");
 
-    function submitForm() {
-      updateView();
-      sendData();
+    fieldImage.addEventListener("change", activeButton);
+    formImage.addEventListener("submit", updateView);
+
+    function activeButton() {
+      const btnSend = document.querySelector("#btn-send");
+      btnSend.disabled = false;
     }
 
     function updateView() {
-      const uploadImage = document.querySelector("#upload-image");
-      const analyzingImage = document.querySelector("#analyzing-image");
+      const uploadImage = document.querySelector("#upload-container");
+      const progressUpload = document.querySelector("#progress-upload");
       uploadImage.classList.remove("d-inline-block");
       uploadImage.classList.add("d-none");
-      analyzingImage.classList.remove("d-none");
-      analyzingImage.classList.add("d-inline-block");
-    }
-
-    function sendData() {
-      const form = document.querySelector("#form-image-cloud");
-      const address = form.action;
-      const formData = new FormData(form);
-      return fetch(address, { method: "POST", body: formData });
+      progressUpload.classList.remove("d-none");
+      progressUpload.classList.add("d-inline-block");
     }
   </script>
 
