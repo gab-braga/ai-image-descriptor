@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 
 <head>
   <meta charset="UTF-8">
@@ -17,6 +17,9 @@
     <h2 class="text-success">Upload success!</h2>
     <div class="card" style="width: clamp(300px, 80%, 550px);">
       <img th:src="${url}" alt="Image uploaded" class="w-100">
+      <a href="/cloud" class="w-100 d-inline-block btn btn-primary text-decoration-none mt-4">
+        View all images
+      </a>
     </div>
   </main>
 

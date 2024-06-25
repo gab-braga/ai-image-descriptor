@@ -13,18 +13,17 @@
 
 <body>
 
+  <header class="px-4 py-3">
+    <a href="/" class="btn btn-secondary text-decoration-none">
+      New image
+    </a>
+  </header>
 
-  <aside class="">
-    <ul th:each="image: ${images}">
-      <li>
-        <span th:text="${image?.name}"></span>
-        <img th:src="${image?.url}" th:alt="${image?.name}" width="200" />
-      </li>
-    </ul>
-  </aside>
-
-  <main class="">
-
+  <main class="w-100 min-vh-100 d-flex flex-wrap align-items-start justify-content-center align-content-start gap-4">
+    <div th:each="image : ${images}" class="card overflow-x-hidden p-2" style="width: clamp(200px, 80vw, 300px); height: clamp(200px, 80vw, 300px);">
+      <a th:href="@{image.url}" th:text="${image.name}" th:download="${image.name}" class="w-100 d-inline-block fs-6" style="text-wrap: nowrap;"></a>
+      <img th:src="${image.url}" th:alt="${image.name}" />
+    </div>
   </main>
 
 </body>
