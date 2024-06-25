@@ -1,4 +1,4 @@
-package io.github.gab_braga.image_descriptor.service;
+package io.github.gab_braga.image_cloud.service;
 
 import java.io.IOException;
 import java.nio.file.Files;
@@ -10,7 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
-import io.github.gab_braga.image_descriptor.component.ShareStorageAzureComponent;
+import io.github.gab_braga.image_cloud.component.ShareStorageAzureComponent;
 
 @Service
 public class AppService {

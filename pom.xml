@@ -9,9 +9,9 @@
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>io.github.gab-braga</groupId>
-	<artifactId>ai-image-descriptor</artifactId>
+	<artifactId>image-cloud</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>ai-image-descriptor</name>
+	<name>image-cloud</name>
 	<description>Demo project for Spring Boot</description>
 	<url/>
 	<licenses>

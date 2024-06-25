@@ -1,4 +1,4 @@
-package io.github.gab_braga.image_descriptor.component;
+package io.github.gab_braga.image_cloud.component;
 
 import com.azure.storage.file.share.*;
 

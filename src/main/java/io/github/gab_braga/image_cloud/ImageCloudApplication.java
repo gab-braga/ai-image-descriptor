@@ -1,12 +1,12 @@
-package io.github.gab_braga.image_descriptor;
+package io.github.gab_braga.image_cloud;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-public class AiImageDescriptorApplication {
+public class ImageCloudApplication {
 
 	public static void main(String[] args) {
-		SpringApplication.run(AiImageDescriptorApplication.class, args);
+		SpringApplication.run(ImageCloudApplication.class, args);
 	}
 }

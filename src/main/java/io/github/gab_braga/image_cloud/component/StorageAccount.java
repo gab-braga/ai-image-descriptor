@@ -1,4 +1,4 @@
-package io.github.gab_braga.image_descriptor.component;
+package io.github.gab_braga.image_cloud.component;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
